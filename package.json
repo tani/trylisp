@@ -8,7 +8,7 @@
     "1:jscl_clone": "git clone https://github.com/jscl-project/jscl",
     "2:jscl_build": "nix run nixpkgs#sbcl -- --load 'jscl/jscl.lisp' --eval '(jscl:bootstrap)' --eval '(quit)'",
     "3:jscl_archive": "git -C jscl archive HEAD -o ../dist/jscl.tar.gz",
-    "3:src_build": "esbuild src/{biwa,jscl}.ts --bundle --external:readline --outdir=dist --sourcemap --minify --format=esm"
+    "4:src_build": "esbuild src/{biwa,jscl}.ts --bundle --external:readline --outdir=dist --sourcemap --minify --format=esm"
   },
   "keywords": [],
   "author": "",

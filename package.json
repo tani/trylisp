@@ -1,0 +1,19 @@
+{
+  "name": "trylisp",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alpinejs": "^3.14.1",
+    "biwascheme": "^0.8.0",
+    "jscl": "^0.8.2",
+    "parcel": "^2.12.0",
+    "tsx": "^4.19.1"
+  }
+}

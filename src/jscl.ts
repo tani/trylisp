@@ -1,4 +1,4 @@
-import JSCL from "jscl";
+import jscl from '../jscl';
 
 export async function run(code: string): Promise<string> {
     const fullCode = `
@@ -10,7 +10,7 @@ export async function run(code: string): Promise<string> {
           (get-output-stream-string sos))
     `;
     try {
-        return Promise.resolve(JSCL.evaluateString(fullCode)); 
+        return Promise.resolve(jscl.evaluateString(fullCode)); 
     } catch (err) {
         return Promise.resolve(err.toString());
     }

@@ -2,10 +2,13 @@
   "name": "trylisp",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.html",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "1:jscl_clone": "git clone https://github.com/jscl-project/jscl",
+    "2:jscl_build": "nix run nixpkgs#sbcl -- --load 'jscl/jscl.lisp' --eval '(jscl:bootstrap)' --eval '(quit)'",
+    "3:jscl_archive": "git -C jscl archive HEAD -o ../dist/jscl.tar.gz",
+    "3:src_build": "esbuild src/{biwa,jscl}.ts --bundle --external:readline --outdir=dist --sourcemap --minify --format=esm"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +16,6 @@
   "dependencies": {
     "alpinejs": "^3.14.1",
     "biwascheme": "^0.8.0",
-    "jscl": "^0.8.2",
-    "parcel": "^2.12.0",
-    "tsx": "^4.19.1"
+    "esbuild": "^0.24.0"
   }
 }

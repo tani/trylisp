@@ -11,8 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/commonlisp/commonlisp.js"></script>
     <script type="module">
         import Alpine from "https://cdn.jsdelivr.net/npm/alpinejs@3/dist/module.esm.min.js";
-        import * as biwa from "./dist/biwa.js";
-        import * as jscl from "./dist/jscl.js";
+        import * as biwa from "./biwa.js";
+        import * as jscl from "./jscl.js";
         Alpine.store('app', {
             input: '',
             output: '',
@@ -113,7 +113,7 @@
         <textarea id="input"></textarea>
         <pre id="output"><code x-text="$store.app.output"></code></pre>
         <p>
-            &copy; 2024 TANIGUCHI Masaya. You can download <a href="dist/jscl.tar.gz">JSCL</a>, which are licensed under the GPL.
+            &copy; 2024 TANIGUCHI Masaya. You can download <a href="./jscl.tar.gz">JSCL</a>, which are licensed under the GPL.
         </p>
     </div>
 </body>

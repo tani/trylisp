@@ -38,9 +38,14 @@
 
         inputEditor.setValue(Alpine.store('app').input);
 
-        inputEditor.on("change", (instance) => {
-            const lang = Alpine.store("app").program === 'jscl' ? 'commonlisp' : 'scheme'; 
+        function updateEditorMode() {
+            const lang = Alpine.store("app").program === 'jscl' ? 'commonlisp' : 'scheme';
             inputEditor.setOption("mode", lang);
+        }
+
+        setInterval(updateEditorMode, 1000);
+
+        inputEditor.on("change", (instance) => {
             Alpine.store("app").setInput(instance.getValue());
         });
 

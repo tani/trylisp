@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try LISP</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/quartz/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/scheme/scheme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/commonlisp/commonlisp.js"></script>
+    <script type="module">
+        import Alpine from "https://cdn.jsdelivr.net/npm/alpinejs@3/dist/module.esm.min.js";
+        import * as biwa from "./dist/biwa.js";
+        import * as jscl from "./dist/jscl.js";
+        Alpine.store('app', {
+            input: '',
+            output: '',
+            interp: 'jscl',
+            run() {
+                this.output = { biwa, jscl }[this.interp.toString()].run(this.input);
+            },
+            setInput(input) {
+                this.input = input;
+            },
+            setOutput(output) {
+                this.output = output;
+            }
+        });
+        Alpine.start();
+        const inputEditor = CodeMirror.fromTextArea(document.getElementById('input'), {
+            lineNumbers: true,
+            mode: "scheme",
+            theme: "default"
+        });
+
+        inputEditor.on("change", (instance) => {
+            const lang = Alpine.store("app").interp == 'jscl' ? 'commonlisp' : 'scheme'; 
+            inputEditor.setOption("mode", lang)
+            Alpine.store("app").setInput(instance.getValue());
+        });
+    </script>
+    <style>
+        #app {
+            margin: 10px auto;
+            width: fit-content;
+            display: grid;
+            grid-template-columns: 20ch 60ch;
+            grid-template-rows: 70px 20rem 10rem 5rem;
+        }
+        #title {
+            text-align: center;
+            grid-row-start: 1;
+            grid-row-end: 2;
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+        #input {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            border-radius: 5px;
+        }
+        .CodeMirror {
+            border-radius: 5px;
+        }
+        #output {
+            font-family: 'Courier New', Courier, monospace;
+            overflow: auto;
+            grid-row-start: 3;
+            grid-row-end: 4;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ccc;
+            padding: 5px;
+        }
+        #sidebar {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" x-data="{ output: '' }">
+        <h1 class="text-center" id="title">Try LISP!</h1>
+        <div id="sidebar">
+            <h2>Interpreter</h2>
+            <ul>
+                <li>Common Lisp
+                    <div class="form-check">
+                        <input class="form-check-input" id="interp-jscl" type="radio" value="jscl" x-model="$store.app.interp">
+                        <label class="form-check-label" for="interp-jscl">JSCL</label>
+                    </div>
+                </li>
+                <li>Scheme
+                    <div class="form-check">
+                        <input class="form-check-input" id="interp-biwa" type="radio" value="biwa" x-model="$store.app.interp">
+                        <label class="form-check-label" for="interp-biwa">Biwascheme</label>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center">
+                <button class="btn btn-primary" x-on:click="$store.app.run()">Run</button>
+                <button class="btn btn-success" x-on:click="void(0)">Save</button>
+            </div>
+        </div>
+        <textarea id="input"></textarea>
+        <pre id="output"><code x-text="$store.app.output"></code></pre>
+        <p>
+            &copy; 2024 TANIGUCHI Masaya. You can download <a href="dist/jscl.tar.gz">JSCL</a>, which are licensed under the GPL.
+        </p>
+    </div>
+</body>
+</html>

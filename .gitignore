@@ -91,6 +91,7 @@ out
 .nuxt
 dist/*
 !dist/.gitkeep
+!dist/index.html
 
 # Gatsby files
 .cache/

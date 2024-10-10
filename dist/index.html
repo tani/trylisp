@@ -13,31 +13,43 @@
         import Alpine from "https://cdn.jsdelivr.net/npm/alpinejs@3/dist/module.esm.min.js";
         import * as biwa from "./biwa.js";
         import * as jscl from "./jscl.js";
+
+        const params = new URLSearchParams(window.location.search);
+
         Alpine.store('app', {
-            input: '',
-            output: '',
-            interp: 'jscl',
-            run() {
-                this.output = { biwa, jscl }[this.interp.toString()].run(this.input);
+            input: params.get('i') || '',
+            output: params.get('o') || '',
+            program: params.get('p') || 'jscl',
+            async run() {
+                this.output = await { biwa, jscl }[this.program].run(this.input);
             },
             setInput(input) {
                 this.input = input;
             },
-            setOutput(output) {
-                this.output = output;
-            }
         });
+        
         Alpine.start();
+        
         const inputEditor = CodeMirror.fromTextArea(document.getElementById('input'), {
             lineNumbers: true,
             mode: "scheme",
             theme: "default"
         });
 
+        inputEditor.setValue(Alpine.store('app').input);
+
         inputEditor.on("change", (instance) => {
-            const lang = Alpine.store("app").interp == 'jscl' ? 'commonlisp' : 'scheme'; 
-            inputEditor.setOption("mode", lang)
+            const lang = Alpine.store("app").program === 'jscl' ? 'commonlisp' : 'scheme'; 
+            inputEditor.setOption("mode", lang);
             Alpine.store("app").setInput(instance.getValue());
+        });
+
+        document.getElementById("saveButton").addEventListener("click", () => {
+            const input = encodeURIComponent(Alpine.store('app').input);
+            const output = encodeURIComponent(Alpine.store('app').output);
+            const program = encodeURIComponent(Alpine.store('app').program);
+            const newUrl = `${window.location.origin}${window.location.pathname}?i=${input}&o=${output}&p=${program}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
         });
     </script>
     <style>
@@ -94,20 +106,20 @@
             <ul>
                 <li>Common Lisp
                     <div class="form-check">
-                        <input class="form-check-input" id="interp-jscl" type="radio" value="jscl" x-model="$store.app.interp">
-                        <label class="form-check-label" for="interp-jscl">JSCL</label>
+                        <input class="form-check-input" id="program-jscl" type="radio" value="jscl" x-model="$store.app.program">
+                        <label class="form-check-label" for="program-jscl">JSCL</label>
                     </div>
                 </li>
                 <li>Scheme
                     <div class="form-check">
-                        <input class="form-check-input" id="interp-biwa" type="radio" value="biwa" x-model="$store.app.interp">
-                        <label class="form-check-label" for="interp-biwa">Biwascheme</label>
+                        <input class="form-check-input" id="program-biwa" type="radio" value="biwa" x-model="$store.app.program">
+                        <label class="form-check-label" for="program-biwa">Biwascheme</label>
                     </div>
                 </li>
             </ul>
             <div class="text-center">
                 <button class="btn btn-primary" x-on:click="$store.app.run()">Run</button>
-                <button class="btn btn-success" x-on:click="void(0)">Save</button>
+                <button id="saveButton" class="btn btn-success">Save</button>
             </div>
         </div>
         <textarea id="input"></textarea>

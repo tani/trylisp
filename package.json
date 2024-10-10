@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "1:jscl_clone": "git clone https://github.com/jscl-project/jscl",
-    "2:jscl_build": "sbcl -- --load 'jscl/jscl.lisp' --eval '(jscl:bootstrap)' --eval '(quit)'",
+    "2:jscl_build": "sbcl --load 'jscl/jscl.lisp' --eval '(jscl:bootstrap)' --eval '(quit)'",
     "3:jscl_archive": "git -C jscl archive HEAD -o ../dist/jscl.tar.gz",
     "4:src_build": "esbuild src/*.ts --bundle --external:readline --outdir=dist --sourcemap --minify --format=esm"
   },

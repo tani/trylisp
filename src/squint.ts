@@ -2,7 +2,11 @@ import { compileString } from 'squint-cljs';
 import * as squint_core from 'squint-cljs/core.js';
 
 export async function run(code: string): Promise<string> {
-  const jsCode = compileString(code, { context: "statement", "elide-imports": true });
+  const jsCode = compileString(code, {
+    context: "return",
+    "elide-imports": true,
+    "elide-exports": true,
+  });
   const jsFunc = Function('squint_core', `${jsCode}`);
   let output = "";
   const write = (...args) => { output += args.map(arg => arg.toString()).join(" ") + "\n"; };

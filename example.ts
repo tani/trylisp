@@ -1,2 +1,2 @@
-import * as biwa from './src/biwa';
-console.log(await biwa.run("hi (display 'hi)"))
+import * as squint from './src/squint';
+console.log("CONSOLE_LOG", await squint.run(`(println "hello")`))

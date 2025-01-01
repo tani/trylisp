@@ -15,6 +15,9 @@
   "license": "ISC",
   "dependencies": {
     "biwascheme": "^0.8.0",
-    "esbuild": "^0.24.0"
+    "squint-cljs": "^0.8.132"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
   }
 }

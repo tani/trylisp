@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/scheme/scheme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/clojure/clojure.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/commonlisp/commonlisp.js"></script>
     <script type="module">
         import Alpine from "https://cdn.jsdelivr.net/npm/alpinejs@3/dist/module.esm.min.js";
         import * as biwa from "./biwa.js";
         import * as jscl from "./jscl.js";
+        import * as squint from './squint.js';
 
         const params = new URLSearchParams(window.location.search);
 
@@ -21,15 +23,15 @@
             output: params.get('o') || '',
             program: params.get('p') || 'jscl',
             async run() {
-                this.output = await { biwa, jscl }[this.program].run(this.input);
+                this.output = await { biwa, jscl, squint }[this.program].run(this.input);
             },
             setInput(input) {
                 this.input = input;
             },
         });
-        
+
         Alpine.start();
-        
+
         const inputEditor = CodeMirror.fromTextArea(document.getElementById('input'), {
             lineNumbers: true,
             mode: "scheme",
@@ -39,7 +41,10 @@
         inputEditor.setValue(Alpine.store('app').input);
 
         function updateEditorMode() {
-            const lang = Alpine.store("app").program === 'jscl' ? 'commonlisp' : 'scheme';
+            const program = Alpine.store("app").program;
+            const lang = program === 'jscl' ? 'commonlisp' :
+                         program === 'biwa' ? 'scheme' :
+                        'clojure';
             inputEditor.setOption("mode", lang);
         }
 
@@ -119,6 +124,12 @@
                     <div class="form-check">
                         <input class="form-check-input" id="program-biwa" type="radio" value="biwa" x-model="$store.app.program">
                         <label class="form-check-label" for="program-biwa">Biwascheme</label>
+                    </div>
+                </li>
+                <li>Clojure
+                    <div class="form-check">
+                        <input class="form-check-input" id="program-jscl" type="radio" value="squint" x-model="$store.app.program">
+                        <label class="form-check-label" for="program-jscl">Squint</label>
                     </div>
                 </li>
             </ul>

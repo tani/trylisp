@@ -133,3 +133,4 @@ dist/*
 
 # JSCL
 jscl
+.direnv

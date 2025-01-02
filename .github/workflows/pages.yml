@@ -16,22 +16,11 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: nix develop -c pnpm install
+      - name: "Build JSCL"
+        run: nix run .#jscl_build
 
-      # Step 5: Run scripts sequentially
-      - name: "Run script 1: Clone JSCL"
-        run: nix develop -c pnpm run 1:jscl_clone
-
-      - name: "Run script 2: Build JSCL"
-        run: nix develop -c pnpm run 2:jscl_build
-
-      - name: "Run script 3: Archive JSCL"
-        run: nix develop -c pnpm run 3:jscl_archive
-
-      - name: "Run script 4: Build source"
-        run: nix develop -c pnpm run 4:src_build
+      - name: "Build App"
+        run: nix run .#app_build
 
       - uses: actions/upload-pages-artifact@v3
         with:

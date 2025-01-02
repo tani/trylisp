@@ -3,7 +3,7 @@ import * as squint_core from 'squint-cljs/core.js';
 
 export async function run(code: string): Promise<string> {
   const jsCode = compileString(code, {
-    context: "return",
+    context: "statement",
     "elide-imports": true,
     "elide-exports": true,
   });
